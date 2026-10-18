@@ -55,4 +55,6 @@ jobs:
     - name: Verify Deployment
       run: |
         kubectl get deployments,pods,services
-        curl -s $(minikube service devops-service --url)
+        kubectl port-forward service/devops-service 8080:80 &
+        sleep 5
+        curl -s --retry 10 --retry-delay 3 --retry-connrefused http://localhost:8080
